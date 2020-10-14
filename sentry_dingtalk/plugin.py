@@ -117,7 +117,6 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
         if not self.is_configured(project):
             return
 
-        project_name = project.get_full_name().encode("utf-8")
         webhookUrl = self.get_option("webhook", project)
         custom_keyword = self.get_option("custom_keyword", project)
         signature = self.get_option("signature", project)
@@ -128,11 +127,10 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
         # title
         title = event.title.encode("utf-8")
         if custom_keyword:
-            title = u"[{}] {}".format(title, custom_keyword)
+            title = u"[{}] {}".format(custom_keyword, title)
 
         # issue
-        issue_link = group.get_absolute_url(params={"referrer": "dingding"})
-        issueStr = "\n> #### [issue]({})".format(issue_link)
+        issue_link = group.get_absolute_url(params={"referrer": "dingtalk"})
 
         if signature:
             timestamp = long(round(time.time() * 1000))
@@ -178,13 +176,22 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                     tag_key.encode("utf-8"), tag_value.encode("utf-8")
                 )
 
-        payload = title
+        payload = "![screenshot](https://gw.alicdn.com/tfs/TB1ut3xxbsrBKNjSZFpXXcXhFXa-846-786.png)"
         if ruleStr:
             payload = title + ruleStr
-        payload = payload + issueStr
         if tagStr:
             payload = payload + tagStr
 
         headers = {"Content-type": "application/json", "Accept": "text/plain"}
         data = {"msgtype": "markdown", "markdown": {"title": title, "text": payload}}
+        data = {
+            "actionCard": {
+                "title": title,
+                "text": payload,
+                "btnOrientation": "0",
+                "singleTitle": "Visit Issue Link",
+                "singleURL": issue_link,
+            },
+            "msgtype": "actionCard",
+        }
         requests.post(webhookUrl, data=json.dumps(data), headers=headers)
