@@ -8,12 +8,14 @@ from sentry.utils import json
 from sentry.utils.http import absolute_uri
 from sentry.integrations import FeatureDescription, IntegrationFeatures
 from sentry_plugins.base import CorePluginMixin
+
 # for dingtalk signature
 import time
 import hmac
 import hashlib
 import base64
 import urllib
+
 
 class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
     title = "Sentry Dingtalk Bot"
@@ -132,19 +134,21 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
         issue_link = group.get_absolute_url(params={"referrer": "dingding"})
         issueStr = "\n> #### [issue]({})".format(issue_link)
 
-        if signature
+        if signature:
             timestamp = long(round(time.time() * 1000))
             secret = signature
-            secret_enc = bytes(secret).encode('utf-8')
-            string_to_sign = '{}\n{}'.format(timestamp, secret)
-            string_to_sign_enc = bytes(string_to_sign).encode('utf-8')
-            hmac_code = hmac.new(secret_enc, string_to_sign_enc, digestmod=hashlib.sha256).digest()
+            secret_enc = bytes(secret).encode("utf-8")
+            string_to_sign = "{}\n{}".format(timestamp, secret)
+            string_to_sign_enc = bytes(string_to_sign).encode("utf-8")
+            hmac_code = hmac.new(
+                secret_enc, string_to_sign_enc, digestmod=hashlib.sha256
+            ).digest()
             sign = urllib.quote_plus(base64.b64encode(hmac_code))
             webhookUrl = u"{}&timestamp={}&sign={}".format(webhookUrl, timestamp, sign)
 
         # 报警规则
         ruleStr = ""
-        if self.get_option("include_rules", project):
+        if include_rules:
             if notification.rules:
                 rule = notification.rules[0]
                 rule_link = "/%s/%s/settings/alerts/rules/%s/" % (

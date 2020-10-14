@@ -36,3 +36,5 @@ nosetests.xml
 docker-squash-linux-amd64-v0.2.0.tar.gz
 image.tar
 squashed.tar
+
+.DS_Store
