@@ -31,7 +31,7 @@ setup(
     keywords='sentry dingding dingtalk',
     author='Ang Yi Quan',
     author_email='ayq3490@gmail.com',
-    url='https://github.com/GaoYuJian/sentry-dingtalk',
+    url='https://github.com/lostncg/sentry-dingtalk',
     description='A Sentry extension which integrates with Dingtalk robot.',
     long_description=__doc__,
     long_description_content_type='text/markdown',
