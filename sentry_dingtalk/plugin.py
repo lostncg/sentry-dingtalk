@@ -125,11 +125,12 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
         include_rules = self.get_option("include_rules", project)
 
         # title
-        title = "### {}\n#### from project: {}\n".format(
-            event.title.encode("utf-8"), project.name
+        title = "{}\n#### From project: {}\n".format(
+            event.title.encode("utf-8"), project.slug
         )
         if custom_keyword:
             title = u"[{}] {}".format(custom_keyword, title)
+        title = "### " + title
 
         # issue
         issue_link = group.get_absolute_url(params={"referrer": "dingtalk"})
