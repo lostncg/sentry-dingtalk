@@ -1,31 +1,25 @@
-# sentry-dingtalk-ecool
+# Sentry Dingtalk Bot
 
-Credits to https://github.com/GaoYuJian/sentry-dingtalk
+> Credits to https://github.com/GaoYuJian/sentry-dingtalk
 
-配置 sentry 钉钉报警通知
+Setup the Dingtalk Bot for Sentry Alerts.
 
-安装 - install
+## Installation
 
-```bash
-
-- pip install sentry-dingtalk-ecool
-```
-
-- or docker
+1. Install with `pip` command
 
 ```bash
-  echo sentry-dingtalk-ecool >> requirements.txt
+- pip install https://github.com/lostncg/sentry-dingtalk/archive/master.zip
 ```
 
-重新构建或者重启(rebuild or reboot)
+2. Write in Sentry on premise's `requirements.txt`
 
-效果:
+```bash
+  echo https://github.com/lostncg/sentry-dingtalk/archive/master.zip >> requirements.txt
+```
 
-![](截屏2020-08-19%2011.54.40.png)
+## Features
 
-![](截屏2020-08-19%2013.31.50.png)
-
-- sentry version: 9.0.0
-- dingding webhook
-- Sentry sending DingTalk. See https://www.dingtalk.com/
-- DingTalk is a product of Alibaba Inc.
+- Support send message with Dingtalk whitelisted keyword.
+- Support send message with Dingtalk signature.
+- List event tags in Dingtalk message, support whitelist.
