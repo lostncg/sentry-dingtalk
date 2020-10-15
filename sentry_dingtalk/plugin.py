@@ -114,8 +114,6 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
         group = event.group
         project = group.project
 
-        print(project)
-
         if not self.is_configured(project):
             return
 
@@ -127,7 +125,9 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
         include_rules = self.get_option("include_rules", project)
 
         # title
-        title = event.title.encode("utf-8")
+        title = "### {}\n#### from project: {}\n".format(
+            event.title.encode("utf-8"), project.name
+        )
         if custom_keyword:
             title = u"[{}] {}".format(custom_keyword, title)
 
@@ -178,7 +178,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                     tag_key.encode("utf-8"), tag_value.encode("utf-8")
                 )
 
-        payload = "###" + title + "\n"
+        payload = title
 
         if ruleStr:
             payload = payload + ruleStr
