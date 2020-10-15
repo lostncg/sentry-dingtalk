@@ -172,18 +172,18 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                     and std_key not in included_tags
                 ):
                     continue
-                tagStr = tagStr + "\n> ###### {}:{} ".format(
+                tagStr = tagStr + "\n- {}:{} ".format(
                     tag_key.encode("utf-8"), tag_value.encode("utf-8")
                 )
 
-        payload = "![screenshot](https://gw.alicdn.com/tfs/TB1ut3xxbsrBKNjSZFpXXcXhFXa-846-786.png)"
+        payload = ""
+
         if ruleStr:
-            payload = title + ruleStr
+            payload = payload + ruleStr
         if tagStr:
             payload = payload + tagStr
 
         headers = {"Content-type": "application/json", "Accept": "text/plain"}
-        data = {"msgtype": "markdown", "markdown": {"title": title, "text": payload}}
         data = {
             "actionCard": {
                 "title": title,
