@@ -136,15 +136,15 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
         issue_link = group.get_absolute_url(params={"referrer": "dingtalk"})
 
         if signature:
-            timestamp = int(round(time.time() * 1000))
+            timestamp = str(round(time.time() * 1000))
             secret = signature
-            secret_enc = bytes(secret).encode("utf-8")
+            secret_enc = secret.encode("utf-8")
             string_to_sign = "{}\n{}".format(timestamp, secret)
-            string_to_sign_enc = bytes(string_to_sign).encode("utf-8")
+            string_to_sign_enc = string_to_sign.encode("utf-8")
             hmac_code = hmac.new(
                 secret_enc, string_to_sign_enc, digestmod=hashlib.sha256
             ).digest()
-            sign = urllib.quote_plus(base64.b64encode(hmac_code))
+            sign = urllib.parse.quote(base64.b64encode(hmac_code))
             webhookUrl = u"{}&timestamp={}&sign={}".format(webhookUrl, timestamp, sign)
 
         # 报警规则
