@@ -176,7 +176,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 ):
                     continue
                 tagStr = tagStr + "\n- {}: {} ".format(
-                    tag_key.encode("utf-8"), tag_value.encode("utf-8")
+                    tag_key.decode("utf-8"), tag_value.decode("utf-8")
                 )
 
         payload = title
