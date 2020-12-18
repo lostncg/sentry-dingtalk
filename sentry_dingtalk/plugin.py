@@ -175,9 +175,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                     and std_key not in included_tags
                 ):
                     continue
-                tagStr = tagStr + "\n- {}: {} ".format(
-                    tag_key.decode("utf-8"), tag_value.decode("utf-8")
-                )
+                tagStr = tagStr + "\n- {}: {} ".format(tag_key, tag_value)
 
         payload = title
 
