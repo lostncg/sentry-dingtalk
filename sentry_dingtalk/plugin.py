@@ -25,7 +25,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
     required_field = "webhook"
     author = "Ang Yi Quan"
     author_url = "https://github.com/lostncg/sentry-dingtalk"
-    version = "1.0.0"
+    version = "1.1.0"
     feature_descriptions = [
         FeatureDescription(
             """
@@ -158,9 +158,9 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                     rule.id,
                 )
                 rule_link = absolute_uri(rule_link)
-                ruleStr = (u"\n> 由报警规则[{}]({})触发".format(rule.label, rule_link)).encode(
-                    "utf-8"
-                )
+                ruleStr = (
+                    u"\n> Triggered by Rule [{}]({})".format(rule.label, rule_link)
+                ).encode("utf-8")
 
         # 标签
         tagStr = ""
