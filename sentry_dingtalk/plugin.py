@@ -27,7 +27,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
     required_field = "webhook"
     author = "Ang Yi Quan"
     author_url = "https://github.com/lostncg/sentry-dingtalk"
-    version = "1.1.0"
+    version = "1.1.1"
     feature_descriptions = [
         FeatureDescription(
             """
