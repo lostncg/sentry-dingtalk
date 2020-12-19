@@ -27,7 +27,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
     required_field = "webhook"
     author = "Ang Yi Quan"
     author_url = "https://github.com/lostncg/sentry-dingtalk"
-    version = "1.1.1"
+    version = "1.1.2"
     feature_descriptions = [
         FeatureDescription(
             """
@@ -54,9 +54,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "placeholder": "https://oapi.dingtalk.com/robot/send?access_token=**********",
                 "required": True,
                 "help": "Your custom dingding webhook URL.",
-                "default": six.text_type(settings.DINGTALK_WEBHOOK)
-                if hasattr(settings, "DINGTALK_WEBHOOK")
-                else "",
+                "default": self.set_default(project, "webhook", "DINGTALK_WEBHOOK"),
             },
             {
                 "name": "custom_keyword",
@@ -65,9 +63,9 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "placeholder": "e.g. [Sentry] Error title",
                 "required": False,
                 "help": "Optional - A custom keyword as the prefix of the event title",
-                "default": six.text_type(settings.DINGTALK_CUSTOM_KEYWORD)
-                if hasattr(settings, "DINGTALK_CUSTOM_KEYWORD")
-                else "",
+                "default": self.set_default(
+                    project, "custom_keyword", "DINGTALK_CUSTOM_KEYWORD"
+                ),
             },
             {
                 "name": "signature",
@@ -75,9 +73,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "type": "string",
                 "required": False,
                 "help": "Optional - Attach Dingtalk webhook signature to the request headers.",
-                "default": six.text_type(settings.DINGTALK_SIGNATURE)
-                if hasattr(settings, "DINGTALK_SIGNATURE")
-                else "",
+                "default": self.set_default(project, "signature", "DINGTALK_SIGNATURE"),
             },
             {
                 "name": "include_tags",
@@ -85,9 +81,9 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "type": "bool",
                 "required": False,
                 "help": "Include tags with notifications",
-                "default": six.text_type(settings.DINGTALK_INCLUDE_TAGS) == "True"
-                if hasattr(settings, "DINGTALK_INCLUDE_TAGS")
-                else False,
+                "default": self.set_default(
+                    project, "include_tags", "DINGTALK_INCLUDE_TAGS"
+                ),
             },
             {
                 "name": "included_tag_keys",
@@ -98,9 +94,9 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                     "Only include these tags (comma separated list). "
                     "Leave empty to include all."
                 ),
-                "default": six.text_type(settings.DINGTALK_INCLUDE_TAG_KEYS)
-                if hasattr(settings, "DINGTALK_INCLUDE_TAG_KEYS")
-                else "",
+                "default": self.set_default(
+                    project, "included_tag_keys", "DINGTALK_INCLUDE_TAG_KEYS"
+                ),
             },
             {
                 "name": "include_rules",
@@ -108,11 +104,18 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "type": "bool",
                 "required": False,
                 "help": "Include triggering rules with notifications.",
-                "default": six.text_type(settings.DINGTALK_INCLUDE_RULES) == "True"
-                if hasattr(settings, "DINGTALK_INCLUDE_RULES")
-                else False,
+                "default": self.set_default(
+                    project, "include_rules", "DINGTALK_INCLUDE_RULES"
+                ),
             },
         ]
+
+    def set_default(self, project, option, env_var):
+        if self.get_option(option, project) != None:
+            return self.get_option(option, project)
+        if hasattr(settings, env_var):
+            return six.text_type(getattr(settings, env_var))
+        return None
 
     def _get_tags(self, event):
         tag_list = event.tags
