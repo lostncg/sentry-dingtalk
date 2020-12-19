@@ -111,7 +111,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
         ]
 
     def set_default(self, project, option, env_var):
-        if self.get_option(option, project):
+        if self.get_option(option, project) != None:
             return self.get_option(option, project)
         if hasattr(settings, env_var):
             return six.text_type(getattr(settings, env_var))
