@@ -20,7 +20,7 @@ from multiprocessing import util
 tests_require = []
 
 install_requires = [
-    "sentry>=20.0.0",
+    "sentry>=20.12.1",
 ]
 
 
