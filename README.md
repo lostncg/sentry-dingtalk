@@ -4,6 +4,10 @@
 
 Setup the Dingtalk Bot for Sentry Alerts.
 
+## Requirements
+
+Sentry on premise version 20.12.1 and above
+
 ## Installation
 
 1. Install with `pip` command
