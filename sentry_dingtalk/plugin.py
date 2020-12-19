@@ -2,12 +2,14 @@
 from __future__ import absolute_import
 
 import requests
+import six
 from sentry import tagstore
 from sentry.plugins.bases import notify
 from sentry.utils import json
 from sentry.utils.http import absolute_uri
 from sentry.integrations import FeatureDescription, IntegrationFeatures
 from sentry_plugins.base import CorePluginMixin
+from django.conf import settings
 
 # for dingtalk signature
 import time
@@ -52,6 +54,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "placeholder": "https://oapi.dingtalk.com/robot/send?access_token=**********",
                 "required": True,
                 "help": "Your custom dingding webhook URL.",
+                "default": six.text_type(settings.DINGTALK_WEBHOOK),
             },
             {
                 "name": "custom_keyword",
@@ -60,6 +63,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "placeholder": "e.g. [Sentry] Error title",
                 "required": False,
                 "help": "Optional - A custom keyword as the prefix of the event title",
+                "default": six.text_type(settings.DINGTALK_CUSTOM_KEYWORD),
             },
             {
                 "name": "signature",
@@ -67,6 +71,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "type": "string",
                 "required": False,
                 "help": "Optional - Attach Dingtalk webhook signature to the request headers.",
+                "default": six.text_type(settings.DINGTALK_SIGNATURE),
             },
             {
                 "name": "include_tags",
@@ -74,6 +79,8 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "type": "bool",
                 "required": False,
                 "help": "Include tags with notifications",
+                "default": six.text_type(settings.DINGTALK_INCLUDE_TAGS) == "True"
+                or False,
             },
             {
                 "name": "included_tag_keys",
@@ -84,6 +91,7 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                     "Only include these tags (comma separated list). "
                     "Leave empty to include all."
                 ),
+                "default": six.text_type(settings.DINGTALK_INCLUDE_TAG_KEYS),
             },
             {
                 "name": "include_rules",
@@ -91,6 +99,8 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "type": "bool",
                 "required": False,
                 "help": "Include triggering rules with notifications.",
+                "default": six.text_type(settings.DINGTALK_INCLUDE_RULES) == "True"
+                or False,
             },
         ]
 
