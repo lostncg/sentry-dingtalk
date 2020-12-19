@@ -54,7 +54,9 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "placeholder": "https://oapi.dingtalk.com/robot/send?access_token=**********",
                 "required": True,
                 "help": "Your custom dingding webhook URL.",
-                "default": six.text_type(settings.DINGTALK_WEBHOOK),
+                "default": six.text_type(settings.DINGTALK_WEBHOOK)
+                if hasattr(settings, "DINGTALK_WEBHOOK")
+                else "",
             },
             {
                 "name": "custom_keyword",
@@ -63,7 +65,9 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "placeholder": "e.g. [Sentry] Error title",
                 "required": False,
                 "help": "Optional - A custom keyword as the prefix of the event title",
-                "default": six.text_type(settings.DINGTALK_CUSTOM_KEYWORD),
+                "default": six.text_type(settings.DINGTALK_CUSTOM_KEYWORD)
+                if hasattr(settings, "DINGTALK_CUSTOM_KEYWORD")
+                else "",
             },
             {
                 "name": "signature",
@@ -71,7 +75,9 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "type": "string",
                 "required": False,
                 "help": "Optional - Attach Dingtalk webhook signature to the request headers.",
-                "default": six.text_type(settings.DINGTALK_SIGNATURE),
+                "default": six.text_type(settings.DINGTALK_SIGNATURE)
+                if hasattr(settings, "DINGTALK_SIGNATURE")
+                else "",
             },
             {
                 "name": "include_tags",
@@ -80,7 +86,8 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "required": False,
                 "help": "Include tags with notifications",
                 "default": six.text_type(settings.DINGTALK_INCLUDE_TAGS) == "True"
-                or False,
+                if hasattr(settings, "DINGTALK_INCLUDE_TAGS")
+                else False,
             },
             {
                 "name": "included_tag_keys",
@@ -91,7 +98,9 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                     "Only include these tags (comma separated list). "
                     "Leave empty to include all."
                 ),
-                "default": six.text_type(settings.DINGTALK_INCLUDE_TAG_KEYS),
+                "default": six.text_type(settings.DINGTALK_INCLUDE_TAG_KEYS)
+                if hasattr(settings, "DINGTALK_INCLUDE_TAG_KEYS")
+                else "",
             },
             {
                 "name": "include_rules",
@@ -100,7 +109,8 @@ class DingtalkPlugin(CorePluginMixin, notify.NotificationPlugin):
                 "required": False,
                 "help": "Include triggering rules with notifications.",
                 "default": six.text_type(settings.DINGTALK_INCLUDE_RULES) == "True"
-                or False,
+                if hasattr(settings, "DINGTALK_INCLUDE_RULES")
+                else False,
             },
         ]
 
